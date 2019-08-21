@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Speeding Planet's RESTful Data Server
+  body
+    h1 Speeding Planet's RESTful Data Server
+    h2 Available resources:
+    ul
+      each resource in resources
+        li
+          a(href=baseUrl + '/' + resource)=resource

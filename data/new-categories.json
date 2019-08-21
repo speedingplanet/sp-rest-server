@@ -1,0 +1,193 @@
+[
+  {
+    "id" : "100",
+    "version": 1,
+    "categoryName": "Income"
+  },
+  {
+    "id": "101",
+    "version": 1,
+    "categoryName": "Salary",
+    "subcategory": "100"
+  },
+  {
+    "id": "102",
+    "version": 1,
+    "categoryName": "Other income",
+    "subcategory": "100"
+  },
+  {
+    "id": "103",
+    "version": 1,
+    "categoryName": "Interest",
+    "subcategory": "100"
+  },
+  {
+    "id": "104",
+    "version": 1,
+    "categoryName": "Project work",
+    "subcategory": "100"
+  },
+  {
+    "id" : "200",
+    "version": 1,
+    "categoryName": "Expense"
+  },
+  {
+    "id": "210",
+    "version": 1,
+    "categoryName": "Groceries",
+    "subcategory": "200"
+  },
+  {
+    "id": "220",
+    "version": 1,
+    "categoryName": "Housing",
+    "subcategory": "200"
+  },
+  {
+    "id": "221",
+    "version": 1,
+    "categoryName": "Rent",
+    "subcategory": "220"
+  },
+  {
+    "id": "220",
+    "version": 1,
+    "categoryName": "Mortgage",
+    "subcategory": "220"
+  },
+  {
+    "id": "220",
+    "version": 1,
+    "categoryName": "Property Tax",
+    "subcategory": "220"
+  },
+  {
+    "id": "230",
+    "version": 1,
+    "categoryName": "Entertainment",
+    "subcategory": "200"
+  },
+  {
+    "id": "231",
+    "version": 1,
+    "categoryName": "Movies",
+    "subcategory": "200"
+  },
+  {
+    "id": "232",
+    "version": 1,
+    "categoryName": "Music",
+    "subcategory": "200"
+  },
+  {
+    "id": "233",
+    "version": 1,
+    "categoryName": "Theatre",
+    "subcategory": "200"
+  },
+  {
+    "id": "240",
+    "version": 1,
+    "categoryName": "Utilities",
+    "subcategory": "200"
+  },
+  {
+    "id": "241",
+    "version": 1,
+    "categoryName": "Gas",
+    "subcategory": "240"
+  },
+  {
+    "id": "242",
+    "version": 1,
+    "categoryName": "Electricity",
+    "subcategory": "240"
+  },
+  {
+    "id": "243",
+    "version": 1,
+    "categoryName": "Cell phone",
+    "subcategory": "240"
+  },
+  {
+    "id": "244",
+    "version": 1,
+    "categoryName": "Internet",
+    "subcategory": "240"
+  },
+  {
+    "id": "250",
+    "version": 1,
+    "categoryName": "Transportation",
+    "subcategory": "200"
+  },
+  {
+    "id": "251",
+    "version": 1,
+    "categoryName": "Car Payment",
+    "subcategory": "250"
+  },
+  {
+    "id": "252",
+    "version": 1,
+    "categoryName": "Car Maintenance",
+    "subcategory": "250"
+  },
+  {
+    "id": "253",
+    "version": 1,
+    "categoryName": "Car Repair",
+    "subcategory": "250"
+  },
+  {
+    "id": "254",
+    "version": 1,
+    "categoryName": "Public Transit",
+    "subcategory": "250"
+  },
+  {
+    "id": "255",
+    "version": 1,
+    "categoryName": "Hired Cars",
+    "subcategory": "250"
+  },
+  {
+    "id": "260",
+    "version": 1,
+    "categoryName": "Medical",
+    "subcategory": "200"
+  },
+  {
+    "id": "270",
+    "version": 1,
+    "categoryName": "Cash",
+    "subcategory": "200"
+  },
+  {
+    "id": "280",
+    "version": 1,
+    "categoryName": "Travel",
+    "subcategory": "200"
+  },
+  {
+    "id": "281",
+    "version": 1,
+    "categoryName": "Airfare",
+    "subcategory": "280"
+  },
+  {
+    "id": "282",
+    "version": 1,
+    "categoryName": "Hotels",
+    "subcategory": "280"
+  },
+  {
+    "id": "283",
+    "version": 1,
+    "categoryName": "Car Rentals",
+    "subcategory": "280"
+  }
+
+]
