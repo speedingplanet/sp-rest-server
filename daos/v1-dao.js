@@ -6,6 +6,8 @@ import { stringify } from 'query-string';
 
 // Internals
 
+const CancelToken = axios.CancelToken;
+
 // Return true if found, false, if not, null if error
 function checkPersonExists(person) {
   return axios
@@ -131,11 +133,30 @@ const defaultQueryOptions = {
   withTransactions: false,
 };
 
+const defaultAxiosOptions = {};
+
 const queryPeople = (criteria = {}, options = {}) => {
-  let criteriaQuery = '';
-  options = { ...defaultQueryOptions, ...options };
+  let criteriaQuery = '',
+    axiosOptions = { ...defaultAxiosOptions, ...options };
+
+  criteria = { ...defaultQueryOptions, ...criteria };
+
+  // Users can pass arbitrary options on the queryString via the options.params property
+  if (options.params) {
+    criteria = { ...criteria, ...options.params };
+  }
   if (options.withTransactions) {
     criteria['_embed'] = 'transactions';
+  }
+
+  if (options.delay) {
+    criteria['_delay'] = options.delay;
+  }
+
+  if (options.cancelToken) {
+    axiosOptions.cancelToken = new CancelToken(
+      cancelFn => (options.cancelToken = cancelFn),
+    );
   }
 
   if (!_.isEmpty(criteria)) {
@@ -143,7 +164,7 @@ const queryPeople = (criteria = {}, options = {}) => {
   }
 
   return axios
-    .get(`${baseUrl}?${criteriaQuery}`)
+    .get(`${baseUrl}?${criteriaQuery}`, axiosOptions)
     .then(response => response.data)
     .catch(handleError);
 };
