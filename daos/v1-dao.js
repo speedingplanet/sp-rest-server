@@ -45,6 +45,7 @@ function handleError(error) {
         case 407:
         case 423:
           message = 'Access / Authorization issues';
+          break;
         case 400:
         case 406:
         case 409:
