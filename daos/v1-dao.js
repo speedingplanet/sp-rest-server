@@ -23,8 +23,12 @@ function checkPersonExists(person) {
 }
 
 function handleError(error) {
-  let message;
-  if (error.response) {
+  let message,
+    isCancel = false;
+  if (axios.isCancel(error)) {
+    message = 'Canceled request';
+    isCancel = true;
+  } else if (error.response) {
     console.error(
       `Server error: ${error.response.status} [${error.response.statusText}]`,
     );
@@ -41,6 +45,7 @@ function handleError(error) {
         case 407:
         case 423:
           message = 'Access / Authorization issues';
+          break;
         case 400:
         case 406:
         case 409:
@@ -60,36 +65,62 @@ function handleError(error) {
       }
     }
   } else {
-    console.error('Unknown error, no server response.');
+    message = 'Unknown error, no server response.';
   }
 
-  return rejectPromise(message);
+  return rejectPromise(message, { isCancel });
 }
 
 function rejectPromise(message, rest) {
   return Promise.reject({ message, ...rest });
 }
 
+function addCancel(options) {
+  if (options.cancelToken) {
+    return {
+      cancelToken: new CancelToken(cancel => options.cancelToken({ cancel })),
+    };
+  }
+}
+
+const defaultAxiosOptions = {};
+
+function getAxiosOptions(options) {
+  return {
+    ...defaultAxiosOptions,
+    ...options,
+    ...addCancel(options),
+  };
+}
+
 // TODO: Pick this up from environment?
 const baseUrl = 'http://localhost:8000/api/v1/banking/people';
 
+const defaultQueryOptions = {
+  withTransactions: false,
+};
+
+const defaultUpdateOptions = { upsert: false };
+
 // Standard methods
-const addPerson = person => {
+const addPerson = (person, options = {}) => {
   if (_.has(person, 'id')) {
     return rejectPromise(
       'A Person with an id should not be added, but updated.',
     );
   }
 
+  let axiosOptions = getAxiosOptions(options);
+
   // Assume good faith otherwise. If the users abused this, or were confused,
   // we could put in more checks before adding this person
   return axios
-    .post(`${baseUrl}`, person)
+    .post(`${baseUrl}`, person, axiosOptions)
     .then(response => response.data)
     .catch(handleError);
 };
 
-const removePerson = async person => {
+const removePerson = async (person, options = {}) => {
   const personExists = await checkPersonExists(person);
   if (_.isNull(personExists)) {
     return rejectPromise(`Could not determine if person #${person.id} exists.`);
@@ -98,24 +129,31 @@ const removePerson = async person => {
   if (!personExists) {
     return rejectPromise(`Person #${person.id} does not exist!`);
   }
+  let axiosOptions = getAxiosOptions(options);
 
   return axios
-    .patch(`${baseUrl}/${person.id}`, { ...person, active: false })
+    .patch(
+      `${baseUrl}/${person.id}`,
+      { ...person, active: false },
+      axiosOptions,
+    )
     .then(response => response.data)
     .catch(handleError);
 };
 
-const updatePerson = async (person, upsert = false) => {
+const updatePerson = async (person, options) => {
+  let axiosOptions = getAxiosOptions(options);
+  options = { ...defaultUpdateOptions, ...options };
   const personExists = await checkPersonExists(person);
   if (_.isNull(personExists)) {
     return rejectPromise(`Could not determine if person #${person.id} exists.`);
   }
 
-  if (!personExists && !upsert) {
+  if (!personExists && !options.upsert) {
     return rejectPromise(`Person #${person.id} does not exist!`);
   }
 
-  if (!personExists && upsert) {
+  if (!personExists && options.upsert) {
     console.warn(
       `Person #${person.id} did not exist. Wiping ID and inserting.`,
     );
@@ -124,20 +162,14 @@ const updatePerson = async (person, upsert = false) => {
   }
 
   return axios
-    .patch(`${baseUrl}/${person.id}`, person)
+    .patch(`${baseUrl}/${person.id}`, person, axiosOptions)
     .then(response => response.data)
     .catch(handleError);
 };
 
-const defaultQueryOptions = {
-  withTransactions: false,
-};
-
-const defaultAxiosOptions = {};
-
 const queryPeople = (criteria = {}, options = {}) => {
   let criteriaQuery = '',
-    axiosOptions = { ...defaultAxiosOptions, ...options };
+    axiosOptions = getAxiosOptions(options);
 
   criteria = { ...defaultQueryOptions, ...criteria };
 
@@ -151,12 +183,6 @@ const queryPeople = (criteria = {}, options = {}) => {
 
   if (options.delay) {
     criteria['_delay'] = options.delay;
-  }
-
-  if (options.cancelToken) {
-    axiosOptions.cancelToken = new CancelToken(
-      cancelFn => (options.cancelToken = cancelFn),
-    );
   }
 
   if (!_.isEmpty(criteria)) {
