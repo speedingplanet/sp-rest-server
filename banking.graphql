@@ -1,0 +1,50 @@
+  type Address {
+    street: String
+    city: String
+    state: String
+    zip: String
+  }
+
+  type Person {
+    firstName: String
+    lastName: String
+    gender: String
+    dateOfBirth: String
+    id: String
+    version: Int
+    address: Address
+    active: Boolean
+  }
+
+  type Payee {
+    id: String
+    version: String
+    payeeName: String
+    address: Address
+    categoryId: String
+    image: String
+    motto: String
+    active: Boolean
+  }
+
+  input AddressInput {
+    street: String
+    city: String
+    state: String
+    zip: String
+  }
+
+  input PayeeSearchCriteria {
+    payeeName: String
+    categoryId: Int
+    active: Boolean
+    address: AddressInput
+  }
+
+  type Query {
+    getPeople: [Person]
+    getPayees(sortField: String = ""): [Payee]
+    getPersonById(id: String!): Person
+    getPayeesByState(state: String!): [Payee]
+    searchPayees(criteria: PayeeSearchCriteria): [Payee]
+  }
