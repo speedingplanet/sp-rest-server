@@ -574,6 +574,19 @@
       "payeeName": "Cash Withdrawal",
       "categoryId": "108",
       "active": true
+    },
+    {
+      "active": true,
+      "version": 1,
+      "payeeName": "CSOSA",
+      "address": {
+        "street": "800 North Capitol Street NW",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20002"
+      },
+      "categoryId": "101",
+      "id": "27"
     }
   ],
   "people": [
@@ -726,6 +739,20 @@
         "zip": "24622"
       },
       "active": true
+    },
+    {
+      "active": true,
+      "version": 1,
+      "firstName": "John",
+      "lastName": "Paxton",
+      "gender": "male",
+      "address": {
+        "street": "32 Stanley Ave",
+        "city": "Nutley",
+        "state": "NJ",
+        "zip": "07110"
+      },
+      "id": "211"
     }
   ],
   "txTypes": [
